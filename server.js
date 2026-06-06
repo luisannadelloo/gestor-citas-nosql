@@ -15,8 +15,22 @@ client.connect().then(() => {
 });
 
 // Endpoint 1: Ver todas las citas agendadas
+// Endpoint 1: Ver TODAS las citas (sin importar el estado) O buscar una específica por ID
 app.get('/api/appointments', async (req, res) => {
-    const citas = await db.collection('appointments').find({ status: "Scheduled" }).toArray();
+    const { id } = req.query; // Revisamos si el usuario escribió "?id=..." en la URL
+
+    let filtro = {}; // 👈 ¡El cambio está aquí! Un objeto vacío significa "tráeme todo"
+
+    if (id) {
+        filtro.appointmentId = id; // Si nos dieron un ID, lo agregamos al filtro
+    }
+
+    const citas = await db.collection('appointments').find(filtro).toArray();
+    
+    if (citas.length === 0) {
+        return res.status(404).json({ mensaje: "No se encontraron citas" });
+    }
+
     res.json(citas);
 });
 
