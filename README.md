@@ -11,7 +11,7 @@ La Clínica Médica enfrenta una tasa de ausentismo del 18% en sus 500 consultas
 * **Dependencias principales:** `mongodb`, `express`, `node-cron`, `cors`
 
 ## Endpoints Principales
-1. `GET /api/appointments`: Obtiene la agenda de citas programadas.
+1. `GET /api/appointments`: Obtiene la agenda de todas las citas y permite consultar citas específicas mediante: "/api/appointments?id=CIT-2026-XXXX".
 2. `GET /api/reminders/respond?token=XYZ&action=confirm`: Permite al paciente confirmar/cancelar.
 3. `GET /api/analytics/noshow`: Genera el reporte analítico de ausentismo por especialidad usando el Aggregation Framework.
 
