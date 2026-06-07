@@ -38,10 +38,28 @@ async function seedDB() {
                 ]
             });
         }
+        // =====================================================================
+        // CITA DE PRUEBA : exactamente a 1 hora en el futuro para asegurar 
+        // que el Cron Job la detecte y envíe el recordatorio.
+        // =====================================================================
+        const fechaEnUnaHora = new Date(Date.now() + 60 * 60 * 1000); // Fecha actual + 1 hora exacta
+
+        citas.push({
+            appointmentId: "CIT-DEMO-1HORA",
+            patient: { name: "Paciente Demo (1 Hora)", phone: "+18095550000" },
+            doctor: { name: "Dr. Evaluador", specialty: "General" },
+            dateTime: fechaEnUnaHora,
+            status: "Scheduled",
+            reminders: {
+                twentyFourHourSent: false,
+                oneHourSent: false
+            },
+            token: "tok_demo_1h_xyz"
+        });
 
         await collection.insertMany(citas);
         
-        // Crear Índices ESR (Requisito UAPA)
+        // Crear Índices ESR 
         await collection.createIndex({ "status": 1, "dateTime": 1 });
 
         console.log(`✅ Base de datos poblada con ${citas.length} citas exitosamente.`);
